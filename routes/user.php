@@ -23,4 +23,4 @@ Route::get('logout', function () {
     User::where('id', $id)->update(['status' => 0]);
     Auth::logout();
     return redirect()->route('login');
-})->name('user.logout');
+})->middleware(['auth'])->name('user.logout');
