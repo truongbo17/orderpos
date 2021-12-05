@@ -16,6 +16,7 @@ class CreateSalaryTable extends Migration
         Schema::create('salary', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('worktime');
             $table->integer('wage');
             $table->integer('bonus');
