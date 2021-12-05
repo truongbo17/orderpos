@@ -1,0 +1,79 @@
+02/12/2021
+Tạo order máy Pos trong cửa hàng,nhà hàng....
+
+Tạo database->table 
+uses{
+    type -> 1:admin,2:user
+    name,
+    email,
+    phone,
+    address,
+    thumbnail,
+    status 0:offline,1:online,2:nghỉ việc(đuổi)
+}
+tables {
+    id,
+    tên bàn,
+    số người tối đa,
+    trạng thái bàn(đã được đặt trước hay chưa->0:chưa,1:rồi)
+}=>phân loại bàn dựa trên số người tối đa(6 người->bàn bình hường,6-15->bàn gia đình,>15->bàn tiệc)
+
+categorymenu {
+    id,
+    name,
+    status -> 0:ẩn,1 hiển thị -> ẩn category sẽ ẩn product thuộc category này->phù hợp với các mùa đông thức ăn lạnh...
+}
+
+product {
+    id,
+    name,
+    user_id,
+    category_id,
+    price,
+    thumbnail,
+    description,
+    status -> 0:hết món,1:bình thường,2: bếp đang chuẩn bị
+}
+
+
+
+03/12/2021
+Phân quyền Admin và Nhân viên:
+-Tạo ra middleware CheckPermission để check quyền
+-Khai báo middleware CheckPermission trong Kernel.php tên là permission
+-Route có dạng middleware(['permission:admin|user']) -> tương đương quyền truy cập là user và admin
+-Trong function handle() middleware CheckPermission nhận tham số $role được truyền từ route vào (admin|user);
+-Tạo ra config tên permission return 1 array bao gồm tất cả các quyền để check dựa trên key(1,2,3...) bảo đảm value phải khớp với cả value được truyền vào từ middleware(route)
+-Ở model User gọi đến config->permission vì check quyền qua type trong bảng users
+-Sau đó Model User sẽ trả về mảng rolemapping tại vị trí $this->type của user đang đăng nhập
+-Ở middleware CheckPermission gọi đến Auth::User->getStrType() để trả ra type hiện tại và so sánh với value được truyền vào từ middleware permission trong route
+
+//Forcus feature order,check tables
+-Tạo seeder fake data bảng Tables
+4 bàn bình thường,2 bàn gia đính và 2 bàn tiệc
+-In ra dữ liệu view order/tables (tạo route group order)
+
+
+4/12/2021
+Xây dựng chức năng User(chỉ có login)->login sẽ set status = 1
+Admin->
+xem tài khoản
+cấp tài khoản->tạo request để validate form đăng kí request App/Http/Request/User/UserRequest
+xóa tài khoản
+chỉnh sửa thông tin cá nhân(cả nhân viên,admin)
+
+Xây dựng chức năng CURD cho product và category_name
+-category_name 
+->route:category_name
+->controller:CategoryController
+->view:/category
+
+5/12/2021
+-thay đổi nghỉ việc hay đi làm tài khoản(cho nhân viên nghỉ)
+dùng thư viện datatable để show data,search,phân trang ở index view table
+
+-Lịch làm
+một ngày 3 ca làm 8-12,12-18,18-22,
+start time,endtime (bắt đầu ca làm,kết thúc ca)
+date(ngày làm)
+note
