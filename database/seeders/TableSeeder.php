@@ -76,13 +76,13 @@ class TableSeeder extends Seeder
 
 
         /**
-         * Run the table product.
+         * Run the table schedule.
          **/
         // for ($i = 1; $i <= 31; $i++) {
         //     DB::table('schedule')->insert([
         //         'datework' => '2021-12-' . $i,
-        //         'starttime' => '8',
-        //         'endtime' => '12',
+        //         'starttime' => '18',
+        //         'endtime' => '22',
         //         'status' => 0,
         //         'note' => 'Chuẩn bị đồ ăn kĩ,lau chùi bàn ghế sạch sẽ',
         //         'created_at' => date('Y-m-d H:i:s'),
@@ -91,16 +91,16 @@ class TableSeeder extends Seeder
         // }
 
         /**
-         * Run the table product.
+         * Run the table attendance.
          **/
-        // for ($i = 1; $i <= 31; $i++) {
-        //     DB::table('attendance')->insert([
-        //         'user_id' => 2,
-        //         'schedule_id' => $i,
-        //         'note' => 'báo đồ ca sau',
-        //         'created_at' => date('Y-m-d H:i:s'),
-        //         'updated_at' => date('Y-m-d H:i:s')
-        //     ]);
-        // }
+        for ($i = 64; $i <= 93; $i++) {
+            DB::table('attendance')->insert([
+                'user_id' => 5,
+                'schedule_id' => $i,
+                'note' => 'báo đồ ca sau',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
     }
 }

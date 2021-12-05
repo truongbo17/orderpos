@@ -20,6 +20,7 @@ class CreateAttendanceTable extends Migration
             $table->unsignedBigInteger('schedule_id');
             $table->foreign('schedule_id')->references('id')->on('schedule');
             $table->string('note', 255);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

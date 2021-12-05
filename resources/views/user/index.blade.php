@@ -11,9 +11,11 @@
                                 <h6 class="text-white text-capitalize ps-3">Danh sách nhân viên</h6>
                             </div>
                             <div class="">
-                                <button class="btn btn-success"
-                                    onclick="window.location.href='{{ route('user.add') }}'">Thêm
-                                    nhân viên</button>
+                                @if (Auth::user()->type == 1)
+                                    <button class="btn btn-success"
+                                        onclick="window.location.href='{{ route('user.add') }}'">Thêm
+                                        nhân viên</button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -21,7 +23,8 @@
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive p-3">
                         <p>Xuất Excel,In ra danh sách nhân viên</p>
-                        <table class="table align-items-center justify-content-center mb-0" id="myTable" data-page-length="5">
+                        <table class="table align-items-center justify-content-center mb-0" id="myTable"
+                            data-page-length="5">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên</th>
@@ -80,11 +83,13 @@
                                             </span>
                                         </td>
                                         <td class="align-middle">
-                                            <a href="{{ route('user.edit') }}?user_id={{ $item->id }}"
-                                                class="text-secondary font-weight-bold text-white text-xs btn btn-warning"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
+                                            @if (Auth::user()->type == 1)
+                                                <a href="{{ route('user.edit') }}?user_id={{ $item->id }}"
+                                                    class="text-secondary font-weight-bold text-white text-xs btn btn-warning"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    Edit
+                                                </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -128,7 +133,7 @@
                     }
                 }
             });
-            $( ".dt-buttons" ).children().attr( "class", "btn btn-info" );
+            $(".dt-buttons").children().attr("class", "btn btn-info");
         });
     </script>
 @endsection

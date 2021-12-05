@@ -9,6 +9,7 @@ use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\User\EditUserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class UserController extends Controller
 {
@@ -139,10 +140,21 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
+        $datetime = new \DateTime(); //ngày hiện tại
+        $currentDate = $datetime->format('Y-m-d'); //format -> 2021-12-05 trùng lặp với cơ sở dũ liệu
+
+        $listAtt = DB::table('users')
+            ->leftJoin('attendance', 'attendance.user_id', 'users.id')
+            ->rightJoin('schedule', 'schedule.id', 'attendance.schedule_id')
+            ->select('users.name', 'users.avatar', 'users.phone', 'users.type', 'users.status', 'schedule.starttime', 'schedule.endtime', 'schedule.datework', 'attendance.note AS notesecond', 'schedule.note AS notefr')
+            ->get();
+
         $userInfo = Auth::user();
         // dd($userInfo);
         return view('user.profile')->with([
-            'userInfo' => $userInfo
+            'currentDate' => $currentDate,
+            'userInfo' => $userInfo,
+            'listAtt' => $listAtt
         ]);
     }
 
