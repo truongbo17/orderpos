@@ -50,9 +50,14 @@ class SalaryController extends Controller
 
         $userSalary = DB::table('salary')
             ->leftJoin('users', 'salary.user_id', 'users.id')
-            ->where('salary.id',$salary_id)
+            ->where('salary.id', $salary_id)
             ->select('users.name', 'users.avatar', 'users.phone', 'users.type', 'users.created_at AS usercreated_at', 'salary.*')
             ->get();
+
+        DB::table('attendance')
+            ->where('user_id', $user_id)
+            ->where('status', 1)
+            ->update(['status' => 0]);
 
         $data = [
             "status" => "success",

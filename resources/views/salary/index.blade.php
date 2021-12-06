@@ -13,13 +13,13 @@
                         </div>
                     </div>
                 </div>
+                <div id="msg"></div>
                 <div class="card-body px-0 pb-2">
-                    <div class="table-responsive p-0">
-                        <div id="msg"></div>
-                        <table class="table align-items-center mb-0">
+                    <div class="table-responsive p-3">
+                        <table class="table align-items-center justify-content-center mb-0">
                             @if (Auth::user()->type == 1)
                                 <p>Tạm tính lương nhân viên</p>
-                                <table class="table" id="myTable1">
+                                <table class="table">
                                     <thead>
                                         <tr>
                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -48,7 +48,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($listUser as $item)
-                                            <tr>
+                                            <tr id="deleteSalary{{ $item->id }}">
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <div>
@@ -63,38 +63,39 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
+                                                    <p class="text-xs text-center font-weight-bold mb-0">
                                                         {{ $item->type == 1 ? 'Quản lý' : 'Nhân viên' }}</p>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="text-xs text-center font-weight-bold mb-0">
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center" id="worktime{{ $item->id }}">
+                                                <td class="text-xs text-center font-weight-bold mb-0"
+                                                    id="worktime{{ $item->id }}">
                                                     {{ $item->sumworktime * 4 }}</td>
-                                                <td class="align-middle text-center">
+                                                <td class="text-xs text-center font-weight-bold mb-0">
                                                     <input type="number" name="wage" id="wage{{ $item->id }}"
                                                         onchange="checkWage({{ $item->id }},this.value)"
                                                         style="width:80px" required>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="text-xs text-center font-weight-bold mb-0">
                                                     <input type="number"
                                                         onchange="checkBonus({{ $item->id }},this.value)" name="bonus"
                                                         id="bonus{{ $item->id }}" value="0" style="width:80px"
                                                         required>
                                                 </td>
-                                                <td class="align-middle">
+                                                <td class="text-xs text-center font-weight-bold mb-0">
                                                     <button onclick="checkSalary({{ $item->id }})"
                                                         class="text-secondary font-weight-bold text-white text-xs btn btn-warning">
                                                         Tính
                                                     </button>
                                                 </td>
-                                                <td class="align-middle text-center">
-                                                    <input type="number" name="total" id="total{{ $item->id }}"
-                                                        disabled>
+                                                <td class="text-xs text-center font-weight-bold mb-0">
+                                                    <input type="number" name="total" style="width:100px"
+                                                        id="total{{ $item->id }}" disabled>
                                                 </td>
-                                                <td class="align-middle">
+                                                <td class="text-xs text-center font-weight-bold mb-0">
                                                     <button onclick="submitSalary({{ $item->id }})"
                                                         class="text-secondary font-weight-bold text-white text-xs btn btn-success">
                                                         Xác nhận
@@ -161,23 +162,25 @@
                                             class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
                                         </span>
                                     </td>
-                                    <td class="align-middle text-center">
+                                    <td class="text-xs text-center font-weight-bold mb-0">
                                         {{ $item->worktime }}</td>
-                                    <td class="align-middle text-center">
+                                    <td class="text-xs text-center font-weight-bold mb-0">
                                         {{ $item->wage }}</td>
-                                    <td class="align-middle text-center">
+                                    <td class="text-xs text-center font-weight-bold mb-0">
                                         {{ $item->bonus }}</td>
-                                    <td class="align-middle text-center">
+                                    <td class="text-xs text-center font-weight-bold mb-0">
                                         {{ number_format($item->total) }} VNĐ</td>
-                                    <td class="align-middle text-center" id="statuspay{{ $item->id }}">
+                                    <td class="text-xs text-center font-weight-bold mb-0"
+                                        id="statuspay{{ $item->id }}">
                                         @if ($item->status == 1)
                                             <span class="badge badge-sm bg-gradient-success">Đã thanh toán</span>
                                         @else
                                             <span class="badge badge-sm bg-gradient-danger">Chưa thanh toán</span>
                                         @endif
-                                    <td class="align-middle text-center">
+                                    <td class="text-xs text-center font-weight-bold mb-0">
                                         {{ date('d/m/Y', strtotime($item->updated_at)) }}</td>
-                                    <td class="align-middle text-center" id="buttonpay{{ $item->id }}">
+                                    <td class="text-xs text-center font-weight-bold mb-0"
+                                        id="buttonpay{{ $item->id }}">
                                         @if (Auth::user()->type == 1)
                                             @if ($item->status == 1)
                                             @else
@@ -235,6 +238,20 @@
             }
         }
 
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [day, month, year].join('/');
+        }
+
         function submitSalary(id) {
             var total = $('#total' + id).val();
             if (total == '') {
@@ -268,6 +285,10 @@
                         // console.log(newData);
 
                         if (newData.status === "success") {
+
+                            var removeSalary = document.querySelector("#deleteSalary" + id);
+                            removeSalary.parentElement.removeChild(removeSalary);
+
                             $('#msg').append(`<div class="alert alert-success alert-dismissible text-white" role="alert" aria-live="assertive"
                                 id="dangerToast" aria-atomic="true">
                                 <span class="text-sm">
@@ -278,6 +299,12 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>`);
+
+                            var created_at1 = newData.data[0].usercreated_at;
+                            created_at = formatDate(created_at1);
+                            var updated_at1 = newData.data[0].updated_at;
+                            updated_at = formatDate(updated_at1);
+
                             $('#newSalary').append(`<tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
@@ -298,24 +325,24 @@
                                         </td>
                                         <td class="align-middle text-center">
                                             <span
-                                                class="text-secondary text-xs font-weight-bold">${newData.data[0].usercreated_at}
+                                                class="text-secondary text-xs font-weight-bold">${created_at}
                                             </span>
                                         </td>
-                                        <td class="align-middle text-center">
+                                        <td class="text-xs text-center font-weight-bold mb-0">
                                             ${newData.data[0].worktime}</td>
-                                        <td class="align-middle text-center">
+                                        <td class="text-xs text-center font-weight-bold mb-0">
                                             ${newData.data[0].wage}</td>
-                                        <td class="align-middle text-center">
+                                        <td class="text-xs text-center font-weight-bold mb-0">
                                             ${newData.data[0].bonus}</td>
-                                        <td class="align-middle text-center">
+                                        <td class="text-xs text-center font-weight-bold mb-0">
                                             ${newData.data[0].total} VNĐ</td>
-                                        <td class="align-middle text-center" id="statuspay${newData.data[0].id}">
+                                        <td class="text-xs text-center font-weight-bold mb-0" id="statuspay${newData.data[0].id}">
                                                 <span class="badge badge-sm bg-gradient-danger">Chưa thanh toán</span>
-                                        <td class="align-middle text-center">
-                                            ${newData.data[0].updated_at}
-                                        <td class="align-middle text-center" id="buttonpay${newData.data[0].id}">
+                                        <td class="text-xs text-center font-weight-bold mb-0">
+                                            ${updated_at}
+                                        <td class="text-xs text-center font-weight-bold mb-0" id="buttonpay${newData.data[0].id}">
                                             @if (Auth::user()->type == 1)
-                                                <button onclick="submitpaySalary(${newData.data[0].id.toISOString().split('T')[0]})"
+                                                <button onclick="submitpaySalary(${newData.data[0].id})"
                                                     class="text-secondary font-weight-bold text-white text-xs btn btn-success">
                                                     Thanh toán
                                                 </button>
