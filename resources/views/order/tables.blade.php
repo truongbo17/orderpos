@@ -153,6 +153,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- end model -->
             </main>
         </div>
         <script>

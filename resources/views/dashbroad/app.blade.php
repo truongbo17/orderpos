@@ -42,19 +42,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white " href="./pages/virtual-reality.html">
+                        <a class="nav-link text-white " href="{{ route('category.index') }}">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="material-icons opacity-10">view_in_ar</i>
+                                <i class="material-icons opacity-10">category</i>
                             </div>
-                            <span class="nav-link-text ms-1">Virtual Reality</span>
+                            <span class="nav-link-text ms-1">Danh mục MENU</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white " href="./pages/notifications.html">
+                        <a class="nav-link text-white " href="{{ route('product.index') }}">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="material-icons opacity-10">notifications</i>
+                                <i class="material-icons opacity-10">cast</i>
                             </div>
-                            <span class="nav-link-text ms-1">Notifications</span>
+                            <span class="nav-link-text ms-1">Món ăn</span>
                         </a>
                     </li>
                     <li class="nav-item mt-3">

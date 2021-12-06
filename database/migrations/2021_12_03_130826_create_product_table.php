@@ -20,9 +20,9 @@ class CreateProductTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('category_menu');
-            $table->decimal('price', 12, 2); // instead of float
+            $table->integer('price'); // instead of float
             $table->string('thumbnail',500);
-            $table->string('description',250);
+            $table->string('description',500);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

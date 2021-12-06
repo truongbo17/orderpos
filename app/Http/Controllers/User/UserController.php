@@ -61,7 +61,7 @@ class UserController extends Controller
             $file->move(public_path('assets/img/avatar'), $filename);
 
             $request->merge(['avatar' => $filename]); //upload có ảnh
-            if ($request->password == null || $request->password == null) {
+            if ($request->password == null && $request->password == '') {
                 //update không đổi pass
                 User::where('id', $request->user_id)
                     ->update([
