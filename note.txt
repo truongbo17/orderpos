@@ -79,3 +79,6 @@ date(ngày làm)
 note
 
 OK LỊCH LÀM
+
+6/12/2021 product,category,customer
+7/12/2021 customer thiếu hiển thi các đơn hàng đã mua

@@ -239,10 +239,8 @@
         function removeValueOld() {
             document.querySelector('[name=product_id]').value = "";
             document.querySelector('[name=name]').value = "";
-            document.querySelector('[name=category_id]').value = "";
             document.querySelector('[name=price]').value = "";
             document.querySelector('[name=description]').value = "";
-            document.querySelector('[name=status]').value = "";
             document.getElementById("output").src = "";
         }
 

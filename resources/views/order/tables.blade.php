@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-md-12 ms-lg text-center">
                     <button class="btn btn-white border-radius-lg p-2 mt-n4 mt-md-2" type="button" data-bs-toggle="tooltip"
-                        data-bs-placement="right" title="Home">
+                        data-bs-placement="right" title="Home" window.onclick=>
                         <i class="material-icons p-2">home</i>
                     </button>
                     <button class="btn btn-white border-radius-lg p-2 mt-n4 mt-md-2" type="button" data-bs-toggle="tooltip"
