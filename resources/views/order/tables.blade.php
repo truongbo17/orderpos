@@ -7,20 +7,20 @@
             <div class="row">
                 <div class="col-md-12 ms-lg text-center">
                     <button class="btn btn-white border-radius-lg p-2 mt-n4 mt-md-2" type="button" data-bs-toggle="tooltip"
-                        data-bs-placement="right" title="Home" window.onclick=>
+                        data-bs-placement="right" title="Home" onclick="window.location.href='{{ route('home') }}'">
                         <i class="material-icons p-2">home</i>
                     </button>
                     <button class="btn btn-white border-radius-lg p-2 mt-n4 mt-md-2" type="button" data-bs-toggle="tooltip"
-                        data-bs-placement="right" title="Search">
+                        data-bs-placement="right" title="Tìm bàn">
                         <i class="material-icons p-2">search</i>
                     </button>
                     <button class="btn btn-white border-radius-lg p-2 mt-n4 mt-md-2" type="button" data-bs-toggle="tooltip"
-                        data-bs-placement="right" title="Option">
+                        data-bs-placement="right" title="Đổi bàn">
                         <i class="material-icons p-2">more_horiz</i>
                     </button>
                     <button class="btn btn-white border-radius-lg p-2 mt-n4 mt-md-2 avatar avatar-lg border-0 p-1"
                         type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="{{ Auth::user()->name }}">
-                        <img class="border-radius-lg" alt="Image placeholder" src="../assets/img/team-1.jpg">
+                        <img class="border-radius-lg" alt="Image placeholder" src="{{ asset('assets/img/avatar/' . Auth::user()->avatar) }}">
                     </button>
                 </div>
             </div>

@@ -15,7 +15,7 @@
                                     <button class="text-secondary font-weight-bold text-white text-xs btn btn-success"
                                         type="button" onclick="removeValueOld()" data-bs-toggle="modal"
                                         data-bs-target="#getProduct1">
-                                        Thêm khách hàng
+                                        Thêm bàn
                                     </button>
                                 @endif
                             </div>
@@ -54,16 +54,14 @@
                                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
                                         Tên</th>
                                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
-                                        SĐT</th>
-                                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
-                                        Ghi chú</th>
+                                        Số lượng người</th>
                                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
                                         Trạng thái</th>
                                     <th class="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($listCustomer as $item)
+                                @foreach ($listTable as $item)
                                     <tr>
                                         <td>
                                             <p class="text-xs text-center font-weight-bold mb-0">
@@ -71,36 +69,27 @@
                                         </td>
                                         <td>
                                             <p class="text-xs text-center font-weight-bold mb-0">
-                                                {{ $item->phone }}</p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs text-center font-weight-bold mb-0">
-                                                {{ $item->note }}</p>
+                                                {{ $item->people_number }}</p>
                                         </td>
                                         <td class="text-sm text-center">
                                             @if ($item->status == 1)
-                                                <span class="badge badge-sm bg-gradient-success">Hiển thị</span>
+                                                <span class="badge badge-sm bg-gradient-success">Có khách</span>
                                             @elseif($item->status == 0)
-                                                <span class="badge badge-sm bg-gradient-secondary">Bị Ẩn</span>
+                                                <span class="badge badge-sm bg-gradient-secondary">Trống</span>
                                             @endif
                                         </td>
                                         <td class="align-middle text-center">
-                                            <button class="text-secondary font-weight-bold text-white text-xs btn btn-info"
-                                                type="button" data-bs-toggle="modal" data-bs-target="#getProduct"
-                                                onclick="chooseTable('{{ $item->name }}',{{ $item->id }})">
-                                                Xem
-                                            </button>
                                             @if (Auth::user()->type == 1)
                                                 <button
                                                     class="text-secondary font-weight-bold text-white text-xs btn btn-warning"
-                                                    type="button" onclick="getInfoCustomer({{ $item->id }})"
+                                                    type="button" onclick="getInfoTable({{ $item->id }})"
                                                     data-bs-toggle="modal" data-bs-target="#getProduct1">
                                                     Sửa
                                                 </button>
                                                 <button
                                                     class="text-secondary font-weight-bold text-white text-xs btn btn-danger"
                                                     type="button"
-                                                    onclick="deleteCustomer('{{ $item->name }}',{{ $item->id }})"
+                                                    onclick="deleteTable('{{ $item->name }}',{{ $item->id }})"
                                                     data-bs-toggle="modal" data-bs-target="#getProduct2">
                                                     Xóa
                                                 </button>
@@ -111,8 +100,8 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $listCustomer->links() }}
-                    <!-- Modal hiển thị đơn hàng-->
+                    {{ $listTable->links() }}
+                    <!-- Modal hiển thị bàn-->
                     <div class="modal fade" id="getProduct" tabindex="-1" aria-labelledby="getProduct"
                         aria-hidden="true">
                         <div class="modal-dialog modal-xl">
@@ -134,10 +123,7 @@
                                                             Tên</th>
                                                         <th
                                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                            Giá</th>
-                                                        <th
-                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                            Mô tả</th>
+                                                            Số lượng người</th>
                                                         <th
                                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                             Trạng thái</th>
@@ -158,43 +144,38 @@
                     </div>
                     {{-- end model --}}
 
-                    <!-- Modal thêm,sửa khách hàng -->
+                    <!-- Modal thêm,sửa bàn -->
                     <div class="modal fade" id="getProduct1" tabindex="-1" aria-labelledby="getProduct1"
                         aria-hidden="true">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="getnametable">Thêm khách hàng,Chỉnh khách hàng</h5>
+                                    <h5 class="modal-title" id="getnametable">Thêm bàn,Chỉnh sửa bàn</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <form action="{{ route('customer.add') }}" method="POST">
+                                <form action="{{ route('table.add') }}" method="POST">
                                     @csrf
-                                    <input id="customer_id" type="text" name="customer_id" hidden>
+                                    <input id="table_id" type="text" name="table_id" hidden>
                                     <div class="modal-body">
                                         <div class="card-body px-0 pb-2">
                                             <div class="table-responsive p-3">
                                                 <div class="input-group input-group-outline my-3">
-                                                    <label class="input-group">Họ tên</label>
+                                                    <label class="input-group">Tên bàn</label>
                                                     <input id="name" type="text" class="form-control" name="name"
                                                         autocomplete="name" required>
                                                 </div>
                                                 <div class="input-group input-group-outline my-3">
-                                                    <label class="input-group">SĐT</label>
-                                                    <input id="phone" type="number" class="form-control" name="phone"
-                                                        autocomplete="phone" required>
-                                                </div>
-                                                <div class="input-group input-group-outline my-3">
-                                                    <label class="input-group">Ghi chú</label>
-                                                    <input id="note" type="text" class="form-control" name="note"
-                                                        autocomplete="note" required>
+                                                    <label class="input-group">Số lượng người</label>
+                                                    <input id="people_number" type="number" class="form-control"
+                                                        name="people_number" autocomplete="people_number" required>
                                                 </div>
                                                 <div class="input-group input-group-outline mb-3">
                                                     <label class="input-group">Chọn trạng thái</label>
                                                     <select class="form-control" name="status">
-                                                        <option value="1" selected>Hiển thị
+                                                        <option value="1">Có khách
                                                         </option>
-                                                        <option value="0">Bị ẩn
+                                                        <option value="0" selected>Trống
                                                         </option>
                                                     </select>
                                                 </div>
@@ -219,9 +200,9 @@
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Xóa khách hàng</h5>
+                                    <h5 class="modal-title">Xóa bàn</h5>
                                 </div>
-                                <form action="{{ route('customer.delete') }}" method="POST">
+                                <form action="{{ route('table.delete') }}" method="POST">
                                     @csrf
                                     <div class="modal-body">
                                         <h6 class="modal-title" id="getnametabledelete"></h6>
@@ -241,91 +222,40 @@
 @section('scriptadd1')
     <script>
         function removeValueOld() {
-            document.querySelector('[name=customer_id]').value = "";
+            document.querySelector('[name=table_id]').value = "";
             document.querySelector('[name=name]').value = "";
-            document.querySelector('[name=phone]').value = "";
-            document.querySelector('[name=note]').value = "";
+            document.querySelector('[name=people_number]').value = "";
         }
 
 
-        function deleteCustomer(name, id) {
+        function deleteTable(name, id) {
             document.getElementById('getnametabledelete').innerText = name;
             document.getElementById('buttondelete').innerHTML = (
-                `<input id="category_id" type="text" value="${id}" name="customer_id" hidden>
+                `<input id="category_id" type="text" value="${id}" name="table_id" hidden>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 <button type="submit" class="btn btn-primary">Xác nhận</button>`
             );
         }
 
-        function getInfoCustomer(id) {
-            var customer_id = document.querySelector('[name=customer_id]');
+        function getInfoTable(id) {
+            var table_id = document.querySelector('[name=table_id]');
             var name = document.querySelector('[name=name]');
-            var phone = document.querySelector('[name=phone]');
-            var note = document.querySelector('[name=note]');
+            var people_number = document.querySelector('[name=people_number]');
             var status = document.querySelector('[name=status]');
-            $.post('{{ route('customer.getinfo') }}', {
+            $.post('{{ route('table.getinfo') }}', {
                 '_token': '{{ @csrf_token() }}',
-                'customer_id': id
+                'table_id': id
             }, function(data) {
                 var newData = JSON.parse(data);
                 console.log(newData);
                 if (newData.status === "success") {
                     name.value = newData.data[0].name;
-                    phone.value = newData.data[0].phone;
-                    note.value = newData.data[0].note;
+                    people_number.value = newData.data[0].people_number;
                     status.value = newData.data[0].status;
-                    customer_id.value = newData.data[0].id;
+                    table_id.value = newData.data[0].id;
                 }
             })
 
-        }
-
-        function chooseTable(name, id) {
-            document.getElementById('getnametable').innerText = name;
-
-            $.post('{{ route('category.viewproduct') }}', {
-                '_token': '{{ @csrf_token() }}',
-                'category_id': id
-            }, function(data) {
-                // console.log(data)
-                var newData = JSON.parse(data)
-                console.log(newData);
-                if (newData.status === "success") {
-                    document.querySelector("#viewProduct").innerHTML = "";
-                    var data = newData.data;
-                    var content = ``;
-                    data.forEach((element) => {
-                        content += `
-                                    <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div>
-                                                <img src="{{ asset('assets/img/products/') }}/${element.thumbnail}"
-                                                    class="avatar avatar-sm me-3 border-radius-lg"
-                                                    alt="products">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">${element.name}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            ${element.price}</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            ${element.description}</p>
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        ${element.status == 1 ? '<span class="badge badge-sm bg-gradient-success">Hiển thị</span>' : '<span class="badge badge-sm bg-gradient-secondary">Bị ẩn</span>'}
-                                    </td>
-                                </tr>`;
-                        document.querySelector("#viewProduct").innerHTML = content;
-                    });
-                }
-
-            })
         }
 
         $(document).ready(function() {
