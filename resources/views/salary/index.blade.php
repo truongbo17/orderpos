@@ -14,69 +14,343 @@
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
-                    <div class="table-responsive p-3">
-                        <p>Xuất Excel,In ra danh sách lương nhân viên</p>
-                        <table class="table align-items-center justify-content-center mb-0" id="myTable"
-                            data-page-length="5">
-                            <thead>
+                    <div class="table-responsive p-0">
+                        <div id="msg"></div>
+                        <table class="table align-items-center mb-0">
+                            @if (Auth::user()->type == 1)
+                                <p>Tạm tính lương nhân viên</p>
+                                <table class="table" id="myTable1">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Tên
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Chức vụ</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Ngày đi làm</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Tổng giờ làm</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Lương/1 giờ(Đơn vị Nghìn</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Thưởng</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Tổng tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($listUser as $item)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex px-2 py-1">
+                                                        <div>
+                                                            <img src="{{ asset('assets/img/avatar/' . $item->avatar) }}"
+                                                                class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                                                        </div>
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-sm">{{ $item->name }}</h6>
+                                                            <p class="text-xs text-secondary mb-0">{{ $item->phone }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        {{ $item->type == 1 ? 'Quản lý' : 'Nhân viên' }}</p>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center" id="worktime{{ $item->id }}">
+                                                    {{ $item->sumworktime * 4 }}</td>
+                                                <td class="align-middle text-center">
+                                                    <input type="number" name="wage" id="wage{{ $item->id }}"
+                                                        onchange="checkWage({{ $item->id }},this.value)"
+                                                        style="width:80px" required>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <input type="number"
+                                                        onchange="checkBonus({{ $item->id }},this.value)" name="bonus"
+                                                        id="bonus{{ $item->id }}" value="0" style="width:80px"
+                                                        required>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <button onclick="checkSalary({{ $item->id }})"
+                                                        class="text-secondary font-weight-bold text-white text-xs btn btn-warning">
+                                                        Tính
+                                                    </button>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <input type="number" name="total" id="total{{ $item->id }}"
+                                                        disabled>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <button onclick="submitSalary({{ $item->id }})"
+                                                        class="text-secondary font-weight-bold text-white text-xs btn btn-success">
+                                                        Xác nhận
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-3">
+                    <hr>
+                    <p>Bảng lương nhân viên</p>
+                    <div id="msg1"></div>
+                    <table class="table align-items-center justify-content-center mb-0" id="myTable">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    Chức vụ</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Ngày đi làm</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Tổng giờ làm</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Lương/1 giờ(Đơn vị Nghìn</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Thưởng</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Tổng tiền</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Trạng thái</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Thời gian</th>
+                                <th class="text-secondary opacity-7"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="newSalary">
+                            @foreach ($listSalary as $item)
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Chức vụ</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Ngày đi làm</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Tổng giờ làm</th>
-                                    <th class="text-secondary opacity-7"></th>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div>
+                                                <img src="{{ asset('assets/img/avatar/' . $item->avatar) }}"
+                                                    class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">{{ $item->name }}</h6>
+                                                <p class="text-xs text-secondary mb-0">{{ $item->phone }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">
+                                            {{ $item->type == 1 ? 'Quản lý' : 'Nhân viên' }}</p>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span
+                                            class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
+                                        </span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{ $item->worktime }}</td>
+                                    <td class="align-middle text-center">
+                                        {{ $item->wage }}</td>
+                                    <td class="align-middle text-center">
+                                        {{ $item->bonus }}</td>
+                                    <td class="align-middle text-center">
+                                        {{ number_format($item->total) }} VNĐ</td>
+                                    <td class="align-middle text-center" id="statuspay{{ $item->id }}">
+                                        @if ($item->status == 1)
+                                            <span class="badge badge-sm bg-gradient-success">Đã thanh toán</span>
+                                        @else
+                                            <span class="badge badge-sm bg-gradient-danger">Chưa thanh toán</span>
+                                        @endif
+                                    <td class="align-middle text-center">
+                                        {{ date('d/m/Y', strtotime($item->updated_at)) }}</td>
+                                    <td class="align-middle text-center" id="buttonpay{{ $item->id }}">
+                                        @if (Auth::user()->type == 1)
+                                            @if ($item->status == 1)
+                                            @else
+                                                <button onclick="submitpaySalary({{ $item->id }})"
+                                                    class="text-secondary font-weight-bold text-white text-xs btn btn-success">
+                                                    Thanh toán
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($listUser as $item)
-                                    <tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+@section('scriptadd1')
+    <script>
+        function checkSalary(id) {
+            var worktime = parseInt($('#worktime' + id).text());
+            // alert(worktime);
+            var wage = $('#wage' + id).val();
+            var bonus = $('#bonus' + id).val();
+            if (wage == '' || bonus == '') {
+                $('#msg').append(`<div class="alert alert-danger alert-dismissible text-white" role="alert" aria-live="assertive"
+                                id="dangerToast" aria-atomic="true">
+                                <span class="text-sm">
+                                    Vui lòng nhập đầy đủ thông tin
+                                </span>
+                                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`);
+            } else {
+                wage = parseInt(wage);
+                bonus = parseInt(bonus);
+                $('#total' + id).val(worktime * wage * 1000 + bonus * 1000);
+            }
+        }
+
+        function checkWage(id, wage) {
+            if (parseInt(wage) < 0) {
+                $('#wage' + id).val(0);
+            }
+        }
+
+        function checkBonus(id, wage) {
+            if (parseInt(wage) < 0) {
+                $('#bonus' + id).val(0);
+            }
+        }
+
+        function submitSalary(id) {
+            var total = $('#total' + id).val();
+            if (total == '') {
+                $('#msg').append(`<div class="alert alert-danger alert-dismissible text-white" role="alert" aria-live="assertive"
+                                id="dangerToast" aria-atomic="true">
+                                <span class="text-sm">
+                                    Vui lòng tính tổng tiền lương để tiếp tục
+                                </span>
+                                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`);
+            } else {
+                var worktime = parseInt($('#worktime' + id).text());
+                var wage = parseInt($('#wage' + id).val());
+                var bonus = parseInt($('#bonus' + id).val());
+                total = parseInt(total);
+                var user_id = id;
+
+                $.post('{{ route('salary.submitsalary') }}', {
+                        '_token': '{{ @csrf_token() }}',
+                        'user_id': user_id,
+                        'worktime': worktime,
+                        'wage': wage,
+                        'bonus': bonus,
+                        'total': total,
+                    },
+                    function(data) {
+                        var newData = JSON.parse(data)
+                        // console.log(newData);
+
+                        if (newData.status === "success") {
+                            $('#msg').append(`<div class="alert alert-success alert-dismissible text-white" role="alert" aria-live="assertive"
+                                id="dangerToast" aria-atomic="true">
+                                <span class="text-sm">
+                                    Tính lương nhân viên thành công
+                                </span>
+                                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`);
+                            $('#newSalary').append(`<tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div>
-                                                    <img src="{{ asset('assets/img/avatar/' . $item->avatar) }}"
+                                                    <img src="{{ asset('assets/img/avatar/') }}/${newData.data[0].avatar}"
                                                         class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
                                                 </div>
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">{{ $item->name }}</h6>
-                                                    <p class="text-xs text-secondary mb-0">{{ $item->phone }}</p>
+                                                    <h6 class="mb-0 text-sm">${newData.data[0].name}</h6>
+                                                    <p class="text-xs text-secondary mb-0">${newData.data[0].phone}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
-                                                {{ $item->type == 1 ? 'Quản lý' : 'Nhân viên' }}</p>
+                                                ${newData.data[0].type ? 'Quản lý' : 'Nhân viên'}
+                                            </p>
                                         </td>
                                         <td class="align-middle text-center">
                                             <span
-                                                class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
+                                                class="text-secondary text-xs font-weight-bold">${newData.data[0].usercreated_at}
                                             </span>
                                         </td>
-                                        <td class="align-middle text-center">{{ $item->sumworktime*4 }} h</td>
-                                        <td class="align-middle">
+                                        <td class="align-middle text-center">
+                                            ${newData.data[0].worktime}</td>
+                                        <td class="align-middle text-center">
+                                            ${newData.data[0].wage}</td>
+                                        <td class="align-middle text-center">
+                                            ${newData.data[0].bonus}</td>
+                                        <td class="align-middle text-center">
+                                            ${newData.data[0].total} VNĐ</td>
+                                        <td class="align-middle text-center" id="statuspay${newData.data[0].id}">
+                                                <span class="badge badge-sm bg-gradient-danger">Chưa thanh toán</span>
+                                        <td class="align-middle text-center">
+                                            ${newData.data[0].updated_at}
+                                        <td class="align-middle text-center" id="buttonpay${newData.data[0].id}">
                                             @if (Auth::user()->type == 1)
-                                                <a href="{{ route('user.edit') }}?user_id={{ $item->id }}"
-                                                    class="text-secondary font-weight-bold text-white text-xs btn btn-warning"
-                                                    data-toggle="tooltip" data-original-title="Edit user">
-                                                    Tính lương
-                                                </a>
+                                                <button onclick="submitpaySalary(${newData.data[0].id.toISOString().split('T')[0]})"
+                                                    class="text-secondary font-weight-bold text-white text-xs btn btn-success">
+                                                    Thanh toán
+                                                </button>
                                             @endif
                                         </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@section('scriptadd1')
-    <script>
+                                    </tr>`);
+                        }
+                    });
+            }
+        }
+
+        function submitpaySalary(id) {
+            $.post('{{ route('salary.submitpaysalary') }}', {
+                    '_token': '{{ @csrf_token() }}',
+                    'id': id
+                },
+                function(data) {
+                    if (data === "success") {
+                        $('#msg1').append(`<div class="alert alert-success alert-dismissible text-white" role="alert" aria-live="assertive"
+                                id="dangerToast" aria-atomic="true">
+                                <span class="text-sm">
+                                    Thanh toán lương thành công
+                                </span>
+                                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`);
+                        $('#statuspay' + id).html(
+                            "<span class='badge badge-sm bg-gradient-success'>Đã thanh toán</span>");
+                        $('#buttonpay' + id).html("");
+                    }
+                });
+        }
+
         $(document).ready(function() {
             $('#myTable').DataTable({
                 dom: 'Bfrtip',
