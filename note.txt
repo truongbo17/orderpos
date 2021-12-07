@@ -86,3 +86,4 @@ OK LỊCH LÀM
 
 note(THÊM DỮ LIỆU LỊCH LÀM từ tháng 1/2021->12/2021 => 8-12,14,18,18-22)=>SEEDER
 
+8/12/2021 - cần làm => fix tổng tiền khi add cart line:413 tables blade

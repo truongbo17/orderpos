@@ -8,4 +8,5 @@ Route::prefix('order')->middleware(['auth'])->group(function () {
     Route::post('getproduct', [TablesController::class, 'getProduct'])->name('tables.getproduct');
     Route::post('livesearchtable', [LiveSearchController::class, 'livesearchtable'])->name('tables.livesearchtable');
     Route::post('livesearchproduct', [LiveSearchController::class, 'livesearchproduct'])->name('tables.livesearchproduct');
+    Route::post('liveselectproduct', [LiveSearchController::class, 'liveselectproduct'])->name('tables.liveselectproduct');
 });

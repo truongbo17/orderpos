@@ -23,7 +23,7 @@
             </div>
             <div class="container-flud">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-8 table-responsive">
                         <h6 class="mb-0">Lịch làm hôm nay</h6>
                         <table class="table align-items-center justify-content-center mb-0" id="" data-page-length="5">
                             <thead>
@@ -93,7 +93,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-2"></div>
                     <div class="col-md-4">
                         <div class="card card-plain h-100">
                             <div class="card-header pb-0 p-3">

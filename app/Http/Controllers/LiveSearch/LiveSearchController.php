@@ -68,8 +68,10 @@ class LiveSearchController extends Controller
             // dd($listProduct);
             if ($listProduct) {
                 foreach ($listProduct as $item) {
-                    $data .= '<div class="col-xl-3 col-md-6 mb-xl-0 mb-4 border"
-                    style="padding-top: 25px">
+                    $data .= '<div class="col-xl-3 col-md-6 mb-xl-0 mb-4 border cursor-pointer item"
+                    style="padding-top: 25px" onclick="valueProduct(this)" field-id="' . $item->id . '"
+                    field-thumbnail="' . $item->thumbnail . '"
+                    field-name="' . $item->name . '" field-price="' . $item->price . '">
                     <div class="card card-blog card-plain">
                         <div class="card-header p-0 mt-n4 mx-3">
                             <a class="d-block shadow-xl border-radius-xl">
@@ -94,11 +96,59 @@ class LiveSearchController extends Controller
                             <p class="mb-4 text-sm">
                             ' . $item->categoryname . '
                             </p>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <button type="button"
-                                    class="btn btn-outline-primary btn-sm mb-0">Chọn
-                                    Món</button>
-                            </div>
+                        </div>
+                    </div>
+                </div>';
+                }
+            } else {
+                $data = 'Không có thông tin về món này !';
+            }
+            return Response($data);
+        }
+    }
+
+    public function liveselectproduct(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = '<button class="btn btn-primary" onclick="showAllProduct()">Tất cả món ăn</button>';
+            $listProduct = DB::table('product')
+                ->leftJoin('category_menu', 'category_menu.id', 'product.category_id')
+                ->select('category_menu.name AS categoryname', 'product.*')
+                ->where('product.category_id', $request->selected)
+                ->where('product.status', 1)
+                ->get();
+
+            // dd($listProduct);
+            if ($listProduct) {
+                foreach ($listProduct as $item) {
+                    $data .= '<div class="col-xl-3 col-md-6 mb-xl-0 mb-4 border cursor-pointer item"
+                    style="padding-top: 25px" onclick="valueProduct(this)" field-id="' . $item->id . '"
+                    field-thumbnail="' . $item->thumbnail . '"
+                    field-name="' . $item->name . '" field-price="' . $item->price . '">
+                    <div class="card card-blog card-plain">
+                        <div class="card-header p-0 mt-n4 mx-3">
+                            <a class="d-block shadow-xl border-radius-xl">
+                                <img src="http://127.0.0.1:8000/assets/img/products/' . $item->thumbnail . '"
+                                    alt="img-blur-shadow"
+                                    class="img-fluid shadow border-radius-xl"
+                                    style="height: 128px">
+                            </a>
+                        </div>
+                        <div class="card-body p-3">
+                            <p class="mb-0 text-sm">
+                            ' . $item->price . 'VNĐ
+                            </p>
+                            <a href="javascript:;">
+                                <h5>
+                                ' . $item->name . '
+                                </h5>
+                            </a>
+                            <p class="mb-4 text-sm">
+                            ' . $item->description . '
+                            </p>
+                            <p class="mb-4 text-sm">
+                            ' . $item->categoryname . '
+                            </p>
                         </div>
                     </div>
                 </div>';
