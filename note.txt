@@ -32,7 +32,7 @@ product {
     price,
     thumbnail,
     description,
-    status -> 0:hết món,1:bình thường,2: bếp đang chuẩn bị
+    status
 }
 
 
@@ -82,3 +82,7 @@ OK LỊCH LÀM
 
 6/12/2021 product,category,customer
 7/12/2021 customer thiếu hiển thi các đơn hàng đã mua
+
+
+note(THÊM DỮ LIỆU LỊCH LÀM từ tháng 1/2021->12/2021 => 8-12,14,18,18-22)=>SEEDER
+

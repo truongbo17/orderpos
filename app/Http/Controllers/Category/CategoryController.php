@@ -47,6 +47,8 @@ class CategoryController extends Controller
                 ]);
                 return redirect(url()->previous() . '#error')->with('error', 'Ẩn tất cả món ăn thuộc menu thành công !');
             } else {
+                DB::table('product')->where('category_id', $category_id)->update(['status' =>  1]);
+
                 DB::table('category_menu')->where('id', $category_id)->update([
                     'name' => $name,
                     'status' => $status,
@@ -94,5 +96,4 @@ class CategoryController extends Controller
             return redirect(url()->previous() . '#success')->with('success', 'Xóa menu thành công !');
         }
     }
-
 }

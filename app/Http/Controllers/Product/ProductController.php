@@ -15,7 +15,8 @@ class ProductController extends Controller
             ->rightJoin('product', 'product.user_id', 'users.id')
             ->leftJoin('category_menu', 'category_menu.id', 'product.category_id')
             ->select('product.id', 'product.name', 'product.price', 'product.thumbnail', 'product.description', 'product.status', 'users.name AS username', 'category_menu.name AS category_name')
-            ->get();
+            ->orderBy('product.updated_at', 'DESC')
+            ->paginate(8);
 
         $listCategory = DB::table('category_menu')->get();
         return view('product.index')->with([

@@ -8,7 +8,7 @@
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <div class="d-flex">
                             <div class="p-2 w-85 bd-highlight">
-                                <h6 class="text-white text-capitalize ps-3">Danh sách khách hàng</h6>
+                                <h6 class="text-white text-capitalize ps-3">Danh sách bàn</h6>
                             </div>
                             <div class="">
                                 @if (Auth::user()->type == 1)
@@ -23,6 +23,7 @@
                     </div>
                 </div>
                 <div class="container">
+                    <p>Phân loại bàn dựa trên số người tối đa(6 người->bàn bình hường,6-15->bàn gia đình,>15->bàn tiệc)</p>
                     <div class="card-body px-0 pb-2">
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible text-white" role="alert" aria-live="assertive"

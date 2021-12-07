@@ -90,7 +90,7 @@
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
-                                                {{ $item->price }}</p>
+                                                {{ number_format($item->price) }} VND</p>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
@@ -125,7 +125,7 @@
                             </tbody>
                         </table>
                     </div>
-
+                    {{ $listProduct->links() }}
                     <!-- Modal thêm,sửa product -->
                     <div class="modal fade" id="getProduct1" tabindex="-1" aria-labelledby="getProduct1"
                         aria-hidden="true">

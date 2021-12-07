@@ -10,7 +10,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $listCustomer = DB::table('customer')->paginate(8);
+        $listCustomer = DB::table('customer')->orderBy('updated_at', 'DESC')->paginate(8);
         return view('customer.index')->with([
             'listCustomer' => $listCustomer
         ]);
