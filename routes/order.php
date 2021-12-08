@@ -9,4 +9,5 @@ Route::prefix('order')->middleware(['auth'])->group(function () {
     Route::post('livesearchtable', [LiveSearchController::class, 'livesearchtable'])->name('tables.livesearchtable');
     Route::post('livesearchproduct', [LiveSearchController::class, 'livesearchproduct'])->name('tables.livesearchproduct');
     Route::post('liveselectproduct', [LiveSearchController::class, 'liveselectproduct'])->name('tables.liveselectproduct');
+    Route::post('submitorder', [TablesController::class, 'submitorder'])->name('tables.submitorder');
 });

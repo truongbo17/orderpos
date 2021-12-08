@@ -39,6 +39,7 @@
                     </button>
                 </div>
             </div>
+            <div id="alertsuccess"> </div>
             <main class="main-content border-radius-lg h-100">
                 <div class="section min-vh-85 position-relative transform-scale-md-8">
                     <div class="container-fluid">
@@ -62,7 +63,8 @@
                                                                 <p class="text-sm mb-0 text-white"> người</p>
                                                             </div>
                                                         </div>
-                                                        <p class="text-white mb-0">Chưa order</p>
+                                                        <p class="text-white mb-0" id="statusorder{{ $item->id }}">Chưa
+                                                            order</p>
                                                         <p class="mb-0 text-white">
                                                             {{ $item->status == 1 ? 'Đã đặt trước' : 'Chưa đặt trước' }}
                                                         </p>
@@ -94,7 +96,8 @@
                                                                 <p class="text-sm mb-0 text-white"> người</p>
                                                             </div>
                                                         </div>
-                                                        <p class="text-white mb-0">Chưa order</p>
+                                                        <p class="text-white mb-0" id="statusorder{{ $item->id }}">Chưa
+                                                            order</p>
                                                         <p class="mb-0 text-white">
                                                             {{ $item->status == 1 ? 'Đã đặt trước' : 'Chưa đặt trước' }}
                                                         </p>
@@ -125,7 +128,8 @@
                                                                 <p class="text-sm mb-0 text-white"> người</p>
                                                             </div>
                                                         </div>
-                                                        <p class="text-white mb-0">Chưa order</p>
+                                                        <p class="text-white mb-0" id="statusorder{{ $item->id }}">Chưa
+                                                            order</p>
                                                         <p class="mb-0 text-white">
                                                             {{ $item->status == 1 ? 'Đã đặt trước' : 'Chưa đặt trước' }}
                                                         </p>
@@ -156,57 +160,103 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-5">
-                                        <table
-                                            class="table table-responsive table-bordered align-items-center justify-content-center mb-0"
-                                            id="myTable" data-page-length="5">
-                                            <thead>
-                                                <tr>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Ảnh</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Tên</th>
-                                                    <th
-                                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Giá</th>
-                                                    <th
-                                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Số lượng</th>
-                                                    <th
-                                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Tổng</th>
-                                                    <th class="text-secondary opacity-7"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="cartList">
-                                            </tbody>
-                                        </table>
-                                        <hr>
+                                        <div class="table-responsive" id="printcart">
+                                            <table
+                                                class="table table-bordered align-items-center justify-content-center mb-0"
+                                                id="myTable" data-page-length="5">
+                                                <thead>
+                                                    <tr>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                            Ảnh</th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                            Tên</th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                            Giá</th>
+                                                        <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                            Số lượng</th>
+                                                        <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                            Tổng</th>
+                                                        <th class="text-secondary opacity-7"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="cartList">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal"
+                                            onclick="printCart()">In Bar,Bếp</button>
                                         <div class="row">
-                                            <div class="col-md-7">
-                                                <p>Tổng tiền : </p>
-                                                <p>Tiền khách đưa : </p>
-                                                <p>Giảm giá : </p>
-                                                <p>Thẻ thành viên : </p>
-                                                <p>Tiền trả khách : </p>
-                                                <p>Giá cuối : </p>
+                                            <div id="printorder">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>Giảm giá : </p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-outline">
+                                                                <input type="text" class="form-control" name="discount"
+                                                                    id="discount">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>Tạm tính : </p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div id="result_money"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>Tiền khách đưa : </p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-outline">
+                                                                <input type="text" class="form-control"
+                                                                    name="customer_money" id="customer_money">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>Tiền trả khách : </p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div id="last_money"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>Thẻ thành viên : </p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group input-group-outline">
+                                                                <input type="text" class="form-control" name="customer"
+                                                                    id="customer">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-5">
-                                                <p id="result_money"> VNĐ</p>
-                                                <div class="input-group input-group-outline">
-                                                    <input type="text" class="form-control" name="customer_money"
-                                                        id="customer_money">
-                                                </div>
-                                                <div class="input-group input-group-outline">
-                                                    <input type="text" class="form-control" name="discount" id="discount">
-                                                </div>
-                                                <div class="input-group input-group-outline">
-                                                    <input type="text" class="form-control" name="customer" id="customer">
-                                                </div>
-                                                <p id="back_money"> VNĐ</p>
-                                                <p id="last_money"> VNĐ</p>
-                                            </div>
+                                            <hr>
+                                            <p>Quy trình xử lý : </p>
+                                            <p><b>Khách order món xong -> in ra bar,bếp -> khách ăn xong mới phải thanh
+                                                    toán
+                                                </b></p>
                                         </div>
                                     </div>
                                     <div class="col-md-7">
@@ -275,9 +325,12 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                    onclick="deletetable()">Xóa bàn</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                    onclick="showAllProduct()">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                    onclick="showAllProduct()">Order Bàn khác</button>
+                                <button type="button" class="btn btn-warning" onclick="printOrder()">In hóa đơn</button>
+                                <button type="button" class="btn btn-primary" onclick="submitCart()">Xác nhận</button>
                             </div>
                         </div>
                     </div>
@@ -322,6 +375,10 @@
             });
             //xóa hết nhưng sản phẩm vừa gọi từ ajax ra,trả về lại all product
             function showAllProduct() {
+                $('#last_money').html(''); //xóa tiền nhập của khách khi cập nhập % giảm giá,order bàn khác
+                $('#customer_money').val('');
+                $('#discount').val('');
+
                 $('#allProduct').show();
                 $('#showProduct').hide();
                 $('#searchproduct').val('');
@@ -330,8 +387,8 @@
 
             //tìm kiếm product
             $('#searchproduct').on('keyup', function() {
-                $value = $(this).val();
-                if ($value === '' && $value.length < 1) {
+                value = $(this).val();
+                if (value === '' && value.length < 1) {
                     $('#showProduct').hide();
                     $('#showProduct').html('');
                     $('#allProduct').show();
@@ -340,7 +397,7 @@
                         type: 'post',
                         url: '{{ route('tables.livesearchproduct') }}',
                         data: {
-                            'search': $value,
+                            'search': value,
                             '_token': '{{ @csrf_token() }}',
                         },
                         success: function(data) {
@@ -363,8 +420,8 @@
 
             //tìm kiếm table
             $('#serachtable').on('keyup', function() {
-                $value = $(this).val();
-                if ($value === '' && $value.length < 1) {
+                value = $(this).val();
+                if (value === '' && value.length < 1) {
                     $('#searchTable').html('');
                     $('#checkHide').show();
                     $('#checkHide1').show();
@@ -373,7 +430,7 @@
                         type: 'post',
                         url: '{{ route('tables.livesearchtable') }}',
                         data: {
-                            'search': $value,
+                            'search': value,
                             '_token': '{{ @csrf_token() }}',
                         },
                         success: function(data) {
@@ -410,7 +467,6 @@
                 for (i = 0; i < cartList.length; i++) {
                     if (cartList[i].table_id == table_id && cartList[i].product_id == product_id) {
                         cartList[i].num++; //lặp qua cartList,nếu tồn tại sản phẩm này rồi thì tăng số lượng lên
-                        cartList[i].totalcash = cartList[i].num * cartList[i].price;
                         isFind = true;
                         break;
                     }
@@ -423,8 +479,7 @@
                         'thumbnail': thumbnail,
                         'name': name,
                         'price': price,
-                        'num': 1,
-                        'totalcash': price
+                        'num': 1
                     })
                 }
                 console.log(cartList);
@@ -432,6 +487,7 @@
             }
 
             function showCart() {
+                totalmoney = 0;
                 $('#cartList').empty(); //xóa dữ liệu cũ để cập nhật dữ liệu mới
 
                 for (i = 0; i < cartList.length; i++) {
@@ -454,7 +510,7 @@
                 //lưu vào storage
                 localStorage.setItem('cartList', JSON.stringify(cartList));
                 $('#result_money').html(totalmoney);
-
+                // $('#last_money').html(totalmoney);
             }
 
             //xóa món ăn trên bàn nhất định
@@ -485,20 +541,141 @@
                         //update tổng tiền trực tiếp không gọi đến showCart
                         money = currentAmount * cartList[i].price;
                         //nếu gọi trực tiếp tới $('#total_money') thì sẽ không biết được update cái nào
-                        $(that).parent().parent().find('#total_money').html(money);
+                        // $(that).parent().parent().find('#total_money').html(money);
+                        showCart(); //gọi trực tiếp để update lại tổng tiền
                         break;
                     }
                 }
 
-                localStorage.setItem('cartList', JSON.stringify(cartList)); //lưu lại num vừa bị thay đổi
+                // localStorage.setItem('cartList', JSON.stringify(cartList)); //lưu lại num vừa bị thay đổi
             }
 
-            //tiền nhập vào
-            // $('#customer_money').keyup(function() {
-            //     var customer_money = $(this).val();
-            //     var last_money = customer_money - total_money;
-            //     $('#customer_money').html(last_money);
-            // })
+            //tính discount
+            $('#discount').keyup(function() {
+                var discount = $(this).val();
+                lastmoney = totalmoney * ((100 - discount) / 100);
+                $('#result_money').html(lastmoney);
+                $('#last_money').html(''); //xóa tiền nhập của khách khi cập nhập % giảm giá
+                $('#customer_money').val('');
+            })
+
+            //tính tiền thừa
+            $('#customer_money').keyup(function() {
+                var customer_money = $(this).val();
+                var result = $('#result_money').html(); //lấy tiền tạm tính
+                // console.log(result)
+                back_money = customer_money - result;
+                if (back_money < 0) {
+                    back_money = "Khách thiếu tiền : " + back_money;
+                }
+                $('#last_money').html(back_money);
+            })
+
+            //in món ăn ra bếp,ba
+            function printCart() {
+                var divContents = document.getElementById("printcart").innerHTML;
+                var a = window.open('', '', 'height=500, width=500');
+                a.document.write('<html>');
+                a.document.write('<body > <h2>Nhà Hàng TruongBo</h2><p>Bàn ' + table_id + '</p> <br>');
+                a.document.write(divContents);
+                a.document.write('</body></html>');
+                a.document.close();
+                a.print();
+            }
+
+            //in món ăn ra bếp,ba
+            function printOrder() {
+                var divContents = document.getElementById("printorder").innerHTML;
+                var a = window.open('', '', 'height=500, width=500');
+                a.document.write('<html>');
+                a.document.write('<body > <h2>Nhà Hàng TruongBo</h2><p>Hóa đơn thanh toán</p> <br>');
+                a.document.write(divContents);
+                a.document.write('</body></html>');
+                a.document.close();
+                a.print();
+            }
+
+
+            //xóa bàn 
+            function deletetable() {
+                for (i = 0; i < cartList.length; i++) {
+                    if (cartList[i].table_id == table_id) {
+                        cartList.splice(i); //xóa bàn kèm tất cả các món trong bàn đi
+                        // console.log(cartList);
+                    }
+                }
+            }
+
+            //submitorder
+            function submitCart() {
+                var cartList = localStorage.getItem('cartList'); //lấy dữ liệu từ storage
+                if (cartList != null && cartList != '') {
+                    data = JSON.parse(cartList);
+                    var cartdata = [];
+
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].table_id == table_id) {
+                            cartdata.push(data[i]);
+                        }
+                    }
+
+                    var result = $('#result_money').html(); //lấy tiền tạm tính
+                    var discount = $('#discount').val(); //lấy giảm giá
+                    var customer_money = $('#customer_money').val(); //lấy tiền khách đưa
+                    var back_money = $('#last_money').html();
+                    var customer = $('#customer').val();
+
+                    if (discount === '' || customer_money === '') {
+                        alert("Vui lòng nhập đủ thông tin thanh toán");
+                        return;
+                    }
+
+                    $.post('{{ route('tables.submitorder') }}', {
+                            '_token': '{{ @csrf_token() }}',
+                            'data': cartdata,
+                            'table_id': table_id,
+                            'result': result,
+                            'discount': discount,
+                            'customer_money': customer_money,
+                            'back_money': back_money,
+                            'customer': customer
+                        },
+                        function(data) {
+                            if (data === "success") {
+                                var cartList = localStorage.getItem('cartList'); //lấy dữ liệu từ storage
+                                cartList = JSON.parse(cartList);
+                                for (i = 0; i < cartList.length; i++) {
+                                    if (cartList[i].table_id == table_id) {
+                                        // console.log(data[i])
+                                        cartList.splice(i,1); //xóa bàn kèm tất cả các món trong bàn đi
+                                        console.log(cartList);
+                                        localStorage.setItem('cartList', JSON.stringify(
+                                        cartList)); //cập nhật lại trong storage
+                                        console.log(localStorage);
+                                    }
+                                }
+
+                                $('#getProduct').modal('toggle');
+                                $('#last_money').html(''); //xóa tiền nhập của khách khi cập nhập % giảm giá,order bàn khác
+                                $('#customer_money').val('');
+                                $('#discount').val('');
+
+
+                                $('#alertsuccess').html(`<div class="alert alert-success alert-dismissible text-white" role="alert" aria-live="assertive"
+                                                    id="dangerToast" aria-atomic="true">
+                                                    <span class="text-sm">
+                                                        Thanh toán thành công
+                                                    </span>
+                                                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>"`);
+                            } else {
+                                alert("Lỗi");
+                            }
+                        })
+                }
+            }
 
             $(document).ready(function() {
                 $('#showProduct').hide(); // ẩn thông tin gọi ajax khi chưa send ajax
@@ -507,7 +684,14 @@
                 if (data != null && data != '') {
                     cartList = JSON.parse(data);
                     showCart(); //gọi đến hàm hiển thị dữ liệu
+
+                    //hiển thị table nào đang được order
+                    for (i = 0; i < cartList.length; i++) {
+                        $('#statusorder' + cartList[i].table_id).html(
+                            '<div style="color:white;font-weight:bold">Đang order<div>')
+                    }
                 }
+
             });
         </script>
     @endsection

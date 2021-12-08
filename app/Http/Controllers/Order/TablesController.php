@@ -34,4 +34,39 @@ class TablesController extends Controller
             'data' => $listProduct
         ]);
     }
+
+    public function submitorder(Request $request)
+    {
+        // dd($request);
+        $customer = DB::table('customer')->where('phone', $request->customer)->first();
+        if ($customer == null) {
+            $customer = 1;
+        } else {
+            $customer = $customer->id;
+        }
+        // dd($customer);
+        $order_id = DB::table('orders_tables')->insertGetId([
+            'customer_id' => $customer,
+            'table_id' => $request->table_id,
+            'result_money' => $request->result,
+            'discount' => $request->discount,
+            'customer_money' => $request->customer_money,
+            'back_money' => $request->back_money,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        foreach ($request->data as $item) {
+            // dd($item['table_id']);
+            DB::table('order_details')->insert([
+                'order_id' => $order_id,
+                'product_id' => $item['product_id'],
+                'price' => $item['price'],
+                'num' => $item['num'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        return "success";
+    }
 }
