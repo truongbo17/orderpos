@@ -7,4 +7,5 @@ Route::prefix('customer')->middleware(['auth'])->group(function () {
     Route::post('add', [CustomerController::class, 'add'])->middleware(['permission:admin'])->name('customer.add');
     Route::post('getinfo', [CustomerController::class, 'getinfo'])->middleware(['permission:admin'])->name('customer.getinfo');
     Route::post('delete', [CustomerController::class, 'delete'])->middleware(['permission:admin'])->name('customer.delete');
+    Route::post('order', [CustomerController::class, 'getorder'])->name('customer.order');
 });

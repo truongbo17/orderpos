@@ -130,17 +130,26 @@
                                                 <thead>
                                                     <tr>
                                                         <th
-                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                            Tên</th>
+                                                            class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
+                                                            ID</th>
                                                         <th
-                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                            Giá</th>
+                                                            class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
+                                                            Bàn</th>
                                                         <th
-                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                            Mô tả</th>
+                                                            class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
+                                                            Tạm tính</th>
                                                         <th
-                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                            Trạng thái</th>
+                                                            class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
+                                                            Giảm giá</th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
+                                                            Tiền nhập vào</th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
+                                                            Tiền thừa</th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">
+                                                            Ngày</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="viewProduct">
@@ -283,9 +292,9 @@
         function chooseTable(name, id) {
             document.getElementById('getnametable').innerText = name;
 
-            $.post('{{ route('category.viewproduct') }}', {
+            $.post('{{ route('customer.order') }}', {
                 '_token': '{{ @csrf_token() }}',
-                'category_id': id
+                'customer_id': id
             }, function(data) {
                 // console.log(data)
                 var newData = JSON.parse(data)
@@ -296,31 +305,36 @@
                     var content = ``;
                     data.forEach((element) => {
                         content += `
-                                    <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div>
-                                                <img src="{{ asset('assets/img/products/') }}/${element.thumbnail}"
-                                                    class="avatar avatar-sm me-3 border-radius-lg"
-                                                    alt="products">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">${element.name}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            ${element.price}</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            ${element.description}</p>
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        ${element.status == 1 ? '<span class="badge badge-sm bg-gradient-success">Hiển thị</span>' : '<span class="badge badge-sm bg-gradient-secondary">Bị ẩn</span>'}
-                                    </td>
-                                </tr>`;
+                        <tr>
+                                        <td>
+                                            <p class="text-xs text-center font-weight-bold mb-0">
+                                                ${element.id}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-center font-weight-bold mb-0">
+                                                ${element.table_id}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-center font-weight-bold mb-0">
+                                                ${element.result_money} VND</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-center font-weight-bold mb-0">
+                                                ${element.discount}%</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-center font-weight-bold mb-0">
+                                                ${element.customer_money} VND</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-center font-weight-bold mb-0">
+                                                ${element.back_money} VND</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-center font-weight-bold mb-0">
+                                                ${element.created_at}</p>
+                                        </td>
+                                    </tr>`;
                         document.querySelector("#viewProduct").innerHTML = content;
                     });
                 }

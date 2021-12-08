@@ -65,4 +65,15 @@ class CustomerController extends Controller
         DB::table('customer')->where('id', $customer_id)->delete();
         return redirect(url()->previous() . '#success')->with('success', 'Xóa khách hàng thành công !');
     }
+
+    public function getorder(Request $request)
+    {
+        $listOrder = DB::table('orders_tables')
+            ->where('customer_id', $request->customer_id)
+            ->get();
+        return json_encode([
+            'status' => 'success',
+            'data' => $listOrder
+        ]);
+    }
 }
